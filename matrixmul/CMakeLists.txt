@@ -1,0 +1,6 @@
+cmake_minimum_required (VERSION 2.8)
+project (testingCUDA)
+find_package(CUDA REQUIRED)
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+set (CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}; -O3 -arch=compute_20 -code=sm_21)
+CUDA_ADD_EXECUTABLE(test simpleMatrixMult.cu)
