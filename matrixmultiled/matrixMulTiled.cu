@@ -94,7 +94,7 @@ int testValues(int *A, int *B, int width){
 int main(){
     int *h_M, *h_N, *h_P,*h_P_d;
     int *d_M, *d_N,*d_P;
-    int width = 1024;
+    int width = 2048;
     cudaError_t error = cudaSuccess;
     int size = width * width * sizeof(int);
     clock_t start, end, startGPU, endGPU;
