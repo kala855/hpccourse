@@ -78,7 +78,6 @@ int main(int argc, char **argv){
     int size = sizeof(unsigned char)*width*height*image.channels();
     int sizeGray = sizeof(unsigned char)*width*height;
 
-
     dataRawImage = (unsigned char*)malloc(size);
     error = cudaMalloc((void**)&d_dataRawImage,size);
     if(error != cudaSuccess){
@@ -109,7 +108,7 @@ int main(int argc, char **argv){
         exit(-1);
     }
 
-    error = cudaMemcpyToSymbol(M,h_M,sizeof(char)*9);
+    error = cudaMemcpyToSymbol(M,h_M,sizeof(char)*MASK_WIDTH*MASK_WIDTH);
     if(error != cudaSuccess){
         printf("Error copiando los datos de h_M a d_M \n");
         exit(-1);
@@ -122,6 +121,7 @@ int main(int argc, char **argv){
     cudaDeviceSynchronize();
     sobelFilter<<<dimGrid,dimBlock>>>(d_imageOutput,width,height,3,d_sobelOutput);
     cudaMemcpy(h_imageOutput,d_sobelOutput,sizeGray,cudaMemcpyDeviceToHost);
+
     endGPU = clock();
 
     Mat gray_image;
@@ -131,14 +131,14 @@ int main(int argc, char **argv){
     start = clock();
     Mat gray_image_opencv, grad_x, abs_grad_x;
     cvtColor(image, gray_image_opencv, CV_BGR2GRAY);
-    Sobel(gray_image_opencv,grad_x,CV_16S,1,0,3,1,0,BORDER_DEFAULT);
+    Sobel(gray_image_opencv,grad_x,CV_8UC1,1,0,3,1,0,BORDER_DEFAULT);
     convertScaleAbs(grad_x, abs_grad_x);
     end = clock();
 
 
     imwrite("./Sobel_Image.jpg",gray_image);
 
-    namedWindow(imageName, WINDOW_NORMAL);
+    /*namedWindow(imageName, WINDOW_NORMAL);
     namedWindow("Gray Image CUDA", WINDOW_NORMAL);
     namedWindow("Sobel Image OpenCV", WINDOW_NORMAL);
 
@@ -146,14 +146,15 @@ int main(int argc, char **argv){
     imshow("Gray Image CUDA", gray_image);
     imshow("Sobel Image OpenCV",abs_grad_x);
 
-    waitKey(0);
+    waitKey(0);*/
 
     //free(dataRawImage);
     gpu_time_used = ((double) (endGPU - startGPU)) / CLOCKS_PER_SEC;
-    printf("Tiempo Algoritmo Paralelo: %.10f\n",gpu_time_used);
+    //printf("Tiempo Algoritmo Paralelo: %.10f\n",gpu_time_used);
     cpu_time_used = ((double) (end - start)) /CLOCKS_PER_SEC;
-    printf("Tiempo Algoritmo OpenCV: %.10f\n",cpu_time_used);
-    printf("La aceleración obtenida es de %.10fX\n",cpu_time_used/gpu_time_used);
+    //printf("Tiempo Algoritmo OpenCV: %.10f\n",cpu_time_used);
+    //printf("La aceleración obtenida es de %.10fX\n",cpu_time_used/gpu_time_used);
+    printf("%.10f,%.10f\n",cpu_time_used,gpu_time_used);
 
     cudaFree(d_dataRawImage);
     cudaFree(d_imageOutput);
