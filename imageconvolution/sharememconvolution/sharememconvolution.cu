@@ -79,7 +79,7 @@ int main(int argc, char **argv){
     cudaError_t error = cudaSuccess;
     clock_t start, end, startGPU, endGPU;
     double cpu_time_used, gpu_time_used;
-    char h_M[] = {-1,0,1,-2,0,2,-1,0,1};
+    char h_M[] = {1,0,-1,2,0,-2,1,0,-1};
     char* imageName = argv[1];
     unsigned char *dataRawImage, *d_dataRawImage, *d_imageOutput, *h_imageOutput, *d_sobelOutput;
     Mat image;
@@ -128,7 +128,7 @@ int main(int argc, char **argv){
         exit(-1);
     }
 
-    error = cudaMemcpyToSymbol(M,h_M,sizeof(char)*9);
+    error = cudaMemcpyToSymbol(M,h_M,sizeof(char)*MASK_WIDTH*MASK_WIDTH);
     if(error != cudaSuccess){
         printf("Error copiando los datos de h_M a d_M \n");
         exit(-1);
@@ -139,7 +139,7 @@ int main(int argc, char **argv){
     dim3 dimGrid(ceil(width/float(blockSize)),ceil(height/float(blockSize)),1);
     img2gray<<<dimGrid,dimBlock>>>(d_dataRawImage,width,height,d_imageOutput);
     cudaDeviceSynchronize();
-    sobelFilterShareMemTest<<<dimGrid,dimBlock>>>(d_imageOutput,width,height,3,d_sobelOutput);
+    sobelFilterShareMemTest<<<dimGrid,dimBlock>>>(d_imageOutput,width,height,MASK_WIDTH,d_sobelOutput);
     cudaMemcpy(h_imageOutput,d_sobelOutput,sizeGray,cudaMemcpyDeviceToHost);
     endGPU = clock();
 
@@ -157,7 +157,7 @@ int main(int argc, char **argv){
 
     imwrite("./Sobel_Image.jpg",gray_image);
 
-  /* namedWindow(imageName, WINDOW_NORMAL);
+/*  namedWindow(imageName, WINDOW_NORMAL);
    namedWindow("Gray Image CUDA", WINDOW_NORMAL);
    namedWindow("Sobel Image OpenCV", WINDOW_NORMAL);
 
