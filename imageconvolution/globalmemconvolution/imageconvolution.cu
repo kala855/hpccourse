@@ -138,15 +138,15 @@ int main(int argc, char **argv){
 
     imwrite("./Sobel_Image.jpg",gray_image);
 
-//    namedWindow(imageName, WINDOW_NORMAL);
-  //  namedWindow("Gray Image CUDA", WINDOW_NORMAL);
-   // namedWindow("Sobel Image OpenCV", WINDOW_NORMAL);
+    namedWindow(imageName, WINDOW_NORMAL);
+    namedWindow("Gray Image CUDA", WINDOW_NORMAL);
+    namedWindow("Sobel Image OpenCV", WINDOW_NORMAL);
 
-    //imshow(imageName,image);
-    //imshow("Gray Image CUDA", gray_image);
-    //imshow("Sobel Image OpenCV",abs_grad_x);
+    imshow(imageName,image);
+    imshow("Gray Image CUDA", gray_image);
+    imshow("Sobel Image OpenCV",abs_grad_x);
 
-    //waitKey(0);
+    waitKey(0);
 
     //free(dataRawImage);
     gpu_time_used = ((double) (endGPU - startGPU)) / CLOCKS_PER_SEC;
