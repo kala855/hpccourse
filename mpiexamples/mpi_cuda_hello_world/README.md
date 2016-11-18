@@ -25,7 +25,7 @@ Se debe generar una llave RSA con el objetivo de garantizar la posibilidad de lo
 Al generar la llave no usen passphrase.
 
 ```bash
-ssh­-keygen ­-t rsa
+ssh-keygen -t rsa
 ```
 
 Esta llave debe adicionarse a las llaves autorizadas:
@@ -52,3 +52,10 @@ ssh node01
 ```
 
 desde cualquiera de los nodos del sistema deberíamos logearnos en el nodo sin solicitarnos password.
+
+## Correr Código
+Para ejecutar el código deben hacerlo de la siguiente manera:
+
+```bash
+mpirun -np 2 --hostfile hostfile mpi_cuda_hello_world
+```
