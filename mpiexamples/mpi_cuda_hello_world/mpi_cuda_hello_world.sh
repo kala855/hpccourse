@@ -6,7 +6,6 @@
 #SBATCH --tasks=2
 #SBATCH --gres=gpu:maxwel
 
-
 export CUDA_VISIBLE_DEVICES=0
 
 mpirun mpi_cuda_hello_world

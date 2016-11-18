@@ -59,3 +59,8 @@ Para ejecutar el código deben hacerlo de la siguiente manera:
 ```bash
 mpirun -np 2 --hostfile hostfile mpi_cuda_hello_world
 ```
+o para garantizar que se ejecuta en 2 nodos diferentes:
+
+```bash
+mpirun -host masterNode,node01 mpi_cuda_hello_world
+```
