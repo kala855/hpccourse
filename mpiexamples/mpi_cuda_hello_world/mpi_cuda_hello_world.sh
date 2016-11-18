@@ -4,8 +4,7 @@
 #SBATCH --output=res_mpi_cuda_hello_world.out
 #SBATCH --nodes=2
 #SBATCH --tasks=2
-#SBATCH --gres=gpu:maxwel
+#SBATCH --gres=gpu:1
 
-export CUDA_VISIBLE_DEVICES=0
-
+echo $CUDA_VISIBLE_DEVICES
 mpirun mpi_cuda_hello_world
