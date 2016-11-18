@@ -1,7 +1,8 @@
 #!/bin/bash
 #
-#sbatch --gres=gpu:1
-#sbatch --ntasks=6
+#SBATCH --nodes=2
+#SBATCH --tasks=2
+#SBATCH --gres=gpu:maxwel
 
 export CUDA_VISIBLE_DEVICES=0
 
