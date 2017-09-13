@@ -1,3 +1,5 @@
+## This code is taken from https://www.olcf.ornl.gov/tutorials/cuda-vector-addition/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
