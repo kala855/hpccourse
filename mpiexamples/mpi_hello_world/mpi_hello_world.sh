@@ -2,10 +2,9 @@
 #
 #SBATCH --job-name=mpi_hello_world
 #SBATCH --output=res_mpi_hello_world.out
-#SBATCH --ntasks=2
-#SBATCH --nodes=2
+#SBATCH --ntasks=4
+#SBATCH --nodes=4
 #SBATCH --time=10:00
 #SBATCH --mem-per-cpu=100
-#SBATCH --gres=gpu:1
 
 mpirun mpi_hello_world
