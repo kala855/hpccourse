@@ -1,5 +1,5 @@
-#include <cv.h>
-#include <highgui.h>
+#include <stdio.h>
+#include <opencv2/opencv.hpp>
 #include <time.h>
 #include <cuda.h>
 
@@ -60,13 +60,6 @@ int main(int argc, char **argv){
 
     dataRawImage = image.data;
 
-    /*for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            dataRawImage[(i*width+j)*3+BLUE] = 0;
-        }
-
-    }*/
-
     startGPU = clock();
     error = cudaMemcpy(d_dataRawImage,dataRawImage,size, cudaMemcpyHostToDevice);
     if(error != cudaSuccess){
@@ -88,21 +81,11 @@ int main(int argc, char **argv){
 
     start = clock();
     Mat gray_image_opencv;
-    cvtColor(image, gray_image_opencv, CV_BGR2GRAY);
+    cvtColor(image, gray_image_opencv, COLOR_RGB2GRAY );
     end = clock();
 
 
     imwrite("./Gray_Image.jpg",gray_image);
-
-    namedWindow(imageName, WINDOW_NORMAL);
-    namedWindow("Gray Image CUDA", WINDOW_NORMAL);
-    namedWindow("Gray Image OpenCV", WINDOW_NORMAL);
-
-    imshow(imageName,image);
-    imshow("Gray Image CUDA", gray_image);
-    imshow("Gray Image OpenCV",gray_image_opencv);
-
-    waitKey(0);
 
     //free(dataRawImage);
     gpu_time_used = ((double) (endGPU - startGPU)) / CLOCKS_PER_SEC;
